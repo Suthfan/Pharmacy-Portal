@@ -1,7 +1,6 @@
 // viewSales.php
 <?php
 require_once 'PharmacyDatabase.php';
-
 $db = new PharmacyDatabase();
 $sales = $db->getSales();
 ?>

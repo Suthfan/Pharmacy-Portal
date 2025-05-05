@@ -3,21 +3,17 @@ session_start();
 require_once 'PharmacyDatabase.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get username and password from the form
     $userName = $_POST['username'];
     $password = $_POST['password'];
 
     $db = new PharmacyDatabase();
 
-    // Validate user
     $user = $db->validateUser($userName, $password);
     if ($user) {
-        // Set session variables after successful login
         $_SESSION['userId'] = $user['userId'];
         $_SESSION['userName'] = $user['userName'];
         $_SESSION['userType'] = $user['userType'];
 
-        // Redirect based on user type
         if ($_SESSION['userType'] === 'pharmacist') {
             header("Location: home.php");
         } else {

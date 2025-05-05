@@ -23,7 +23,6 @@ class PharmacyDatabase
     }
     
     public function validateUser($userName, $password) {
-        // Prepare the SQL query to select the user by userName
         $stmt = $this->connection->prepare(
             "SELECT userId, userName, userType, password FROM Users WHERE userName = ?"
         );
@@ -32,11 +31,9 @@ class PharmacyDatabase
             die('Database query preparation failed: ' . $this->connection->error);
         }
     
-        // Bind parameters and execute the statement
         $stmt->bind_param("s", $userName);
         $stmt->execute();
     
-        // Bind the result to variables
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
@@ -48,14 +45,13 @@ class PharmacyDatabase
             $userType = $user['userType'];
             $storedPassword = $user['password'];
         } else {
-            return null; // User not found
+            return null; 
         }
     
-        // Verify the entered password with the stored hashed password
         if ($userId && password_verify($password, $storedPassword)) {
             return ['userId' => $userId, 'userName' => $userName, 'userType' => $userType];
         } else {
-            return null;  // Invalid credentials
+            return null; 
         }
     }
     
@@ -94,7 +90,6 @@ class PharmacyDatabase
 
     public function addOrGetUser($userName, $contactInfo, $userType)
     {
-        // Check if user exists
         $stmt = $this->connection->prepare("SELECT userId FROM Users WHERE userName = ?");
         $stmt->bind_param("s", $userName);
         $stmt->execute();
@@ -106,7 +101,6 @@ class PharmacyDatabase
         }
         $stmt->close();
 
-        // If not, insert new user
         $stmt = $this->connection->prepare(
             "INSERT INTO Users (userName, contactInfo, userType) VALUES (?, ?, ?)"
         );
@@ -139,47 +133,37 @@ class PharmacyDatabase
     }
 
 
-    // Add this function to PharmacyDatabase.php
     public function addUser($userName, $contactInfo, $userType, $password)
     {
-        // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Prepare the query to insert the new user
         $stmt = $this->connection->prepare(
             "INSERT INTO Users (userName, contactInfo, userType, password) VALUES (?, ?, ?, ?)"
         );
         if ($stmt === false) {
-            // Log the error
             die('Database query preparation failed: ' . $this->connection->error);
         }
 
-        // Bind the parameters (userName, contactInfo, userType, hashed password)
         $stmt->bind_param("ssss", $userName, $contactInfo, $userType, $hashedPassword);
         $stmt->execute();
 
-        // Check if the insertion was successful
         if ($stmt->affected_rows > 0) {
             echo "User added successfully!";
         } else {
             echo "Failed to add user.";
         }
 
-        // Close the statement
         $stmt->close();
     }
 
     public function addMedication($medicationName, $dosage, $manufacturer) {
-        // Prepare the SQL statement to insert medication
         $stmt = $this->connection->prepare("INSERT INTO medications (medicationName, dosage, manufacturer) VALUES (?, ?, ?)");
         if ($stmt === false) {
-            return false; // If prepare fails
+            return false; 
         }
         
-        // Bind parameters
         $stmt->bind_param("sss", $medicationName, $dosage, $manufacturer);
         
-        // Execute the statement
         if ($stmt->execute()) {
             $stmt->close();
             return true;
@@ -214,7 +198,4 @@ class PharmacyDatabase
         return $result->fetch_all(MYSQLI_ASSOC);
     }
     
-
-
-    //Add Other needed functions here
 }

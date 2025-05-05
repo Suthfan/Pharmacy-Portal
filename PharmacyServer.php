@@ -58,30 +58,24 @@ class PharmacyPortal
             include 'templates/addPrescription.php';
         }
     }
-
-    
     private function viewInventory() {
-        // Get all medications and their current inventory from the database
         $inventory = $this->db->getInventory();
-        include 'templates/viewInventory.php';  // Show the inventory list
+        include 'templates/viewInventory.php';
     }
     private function viewSales() {
-        // Get all medications and their current inventory from the database
         $inventory = $this->db->getInventory();
-        include 'templates/viewSales.php';  // Show the inventory list
+        include 'templates/viewSales.php';  
     }
     private function addMedication() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Get the form data
             $medicationName = $_POST['medication_name'];
             $dosage = $_POST['dosage'];
             $manufacturer = $_POST['manufacturer'];
 
-            // Call the addMedication function from the database class
             $this->db->addMedication($medicationName, $dosage, $manufacturer);
             echo "<p>Medication added successfully!</p>";
         } else {
-            include 'templates/addMedication.php'; // Include the addMedication form template
+            include 'templates/addMedication.php'; 
         }
     }
     private function addUser()
@@ -90,7 +84,7 @@ class PharmacyPortal
             $userName = $_POST['user_name'];
             $contactInfo = $_POST['contact_info'];
             $userType = $_POST['user_type'];
-            $password = $_POST['password']; // Assuming password is provided in the form
+            $password = $_POST['password']; 
             $this->db->addUser($userName, $contactInfo, $userType, $password);
             header("Location:?action=home&message=User Added");
         } else {
@@ -104,6 +98,5 @@ class PharmacyPortal
         include 'templates/viewPrescriptions.php';
     }
 }
-
 $portal = new PharmacyPortal();
 $portal->handleRequest();

@@ -5,7 +5,6 @@ if (!isset($_SESSION['userId']) || !isset($_SESSION['userType'])) {
     header("Location: login.php");
     exit();
 }
-
 $userName = $_SESSION['userName'];
 $userType = $_SESSION['userType'];
 ?>
