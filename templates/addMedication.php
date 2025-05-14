@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h1>Add Medication</h1>
-    <form method="POST" action="addMedication.php">
+    <form method="POST" action="?action=addMedication">
         <label for="medication_name">Medication Name:</label>
         <input type="text" id="medication_name" name="medication_name" required /><br>
         <label for="dosage">Dosage:</label>
